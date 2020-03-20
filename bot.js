@@ -10,3 +10,16 @@ client.on("ready", () => {
 })
 
 //rest of code
+client.on("message", async (message) => {
+    const command = message.content.toLocaleLowerCase();
+
+    //bot-specific commands
+    if(command == prefix + "help") {
+        //help command, maybe link to online document
+        message.channel.send();
+    }
+
+    if(command == prefix + "start") {
+        //start game
+    }
+})
