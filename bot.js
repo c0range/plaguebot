@@ -27,3 +27,5 @@ client.on("message", async (message) => {
         //start game
     }
 })
+
+client.login(config.token);
