@@ -19,6 +19,10 @@ client.on("message", async (message) => {
         message.channel.send();
     }
 
+    if(command == prefix + "about") {
+        message.channel.send("https://github.com/c0range/plaguebot");
+    }
+
     if(command == prefix + "start") {
         //start game
     }
