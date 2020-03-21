@@ -20,4 +20,8 @@ The file content should be like this:
 In `token` field, insert your bot secret token obrtained from Discord's developer portal.
 For `prefix`, choose your own command symbol like "!" or "$" so it does not conflict with existing bots.
 
+<<<<<<< HEAD
 ## The Game
+=======
+## The Game
+>>>>>>> 596a657ec0fd5c81137b31fe1aebc755e9d701ee
