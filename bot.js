@@ -8,6 +8,7 @@ const infectionRate = 2;
 //on startup
 client.on("ready", () => {
     console.log("login successful");
+     
 });
 
 //rest of code
