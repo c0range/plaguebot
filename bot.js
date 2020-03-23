@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./secret/config.json");
 const prefix = config.prefix;
+const infectionRate = 2;
 
 //on startup
 client.on("ready", () => {
@@ -27,16 +28,37 @@ client.on("message", async (message) => {
         //start game
     }
 
-    if(command == "cough" || command == "sneeze" || command =="spit") {
-        cough();
+    if(command == "cough") {
+        infectTC();
 
-        async function cough() {
+        async function infectTC() {
             const seconds = message.createdAt.getSeconds() + 60;
+            //implement recent messages only
             console.log(seconds);
-            message.channel.send(`${message.member.nickname} coughed at ${message.createdAt}`);
-            const mAll = await message.channel.messages.fetch({ limit: 10});
-            const mNoBot = mAll.filter(m => m.author.id !== '691029385846849566');
-            mNoBot.first(message => console.log(message.content));
+            //fetches previous five messages
+            const mAll = await message.channel.messages.fetch({ limit: 5});
+            //ignores bot role
+            const mNoBot = mAll.filter(m => {
+                if (m.member.roles.cache.has(config.botRole)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+            var mArray = mNoBot.array();
+            var subjects = [];
+            var arrayLength = mArray.length;
+            for (var i = 0; i < arrayLength; i++) {
+                subjects[i] = mArray[i].author.id;
+            }
+            //choose who to infect
+            let infectChoice = Math.floor(Math.random() * mArray.length);
+            //infect
+            let risk = Math.floor(Math.random() * infectionRate);
+            if (risk == 0) {
+                console.log(`${subjects[infectChoice]} has been infected!`);
+            }
+            message.channel.send(`Ew.. ${message.member.nickname} coughed. ${subjects.length} messages in this conversation has a chance of getting the virus. The chance of then being infected is currently ${100 / infectionRate}%.`);
             
             
             
