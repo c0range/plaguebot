@@ -14,11 +14,13 @@ The file content should be like this:
 ```JSON
 {
     "token" : "YOUR-TOKEN-HERE",
-    "prefix" : "YOUR-PREFIX-HERE"
+    "prefix" : "YOUR-PREFIX-HERE",
+    "botRole" : "BOT-ROLE-ID"
 }
 ```
-In `token` field, insert your bot secret token obrtained from Discord's developer portal.
+In the `token` field, insert your bot secret token obtained from Discord's developer portal.
 For `prefix`, choose your own command symbol like "!" or "$" so it does not conflict with existing bots.
+For `botRole`, put in the id of the role that the server uses to classify bots. To get the id, right click on a role and click "Copy ID." Doing this will effetively ignore all bot actions to optimize gameplay.
 
 ## The Game
 
