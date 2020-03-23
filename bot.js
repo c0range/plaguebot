@@ -56,7 +56,7 @@ client.on("message", async (message) => {
             //infect
             let risk = Math.floor(Math.random() * infectionRate);
             if (risk == 0) {
-                console.log(`${subjects[infectChoice]} has been infected!`);
+                message.channel.send(`${subjects[infectChoice]} has been infected!`);
             }
             message.channel.send(`Ew.. ${message.member.nickname} coughed. ${subjects.length} messages in this conversation has a chance of getting the virus. The chance of then being infected is currently ${100 / infectionRate}%.`);
             
