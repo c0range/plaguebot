@@ -8,7 +8,8 @@ const infectionRate = 2;
 //on startup
 client.on("ready", () => {
     console.log("login successful");
-     
+    
+
 });
 
 //rest of code
@@ -16,17 +17,26 @@ client.on("message", async (message) => {
     const command = message.content.toLocaleLowerCase();
 
     //bot-specific commands
-    if(command == prefix + "help") {
+    if (command == prefix + "help") {
         //help command, maybe link to online document
         message.channel.send("help command");
     }
 
-    if(command == prefix + "about") {
+    if (command == prefix + "about") {
         message.channel.send("Hi I'm Plague Doctor (aka PlagueBot)! Learn more about me at https://github.com/c0range/plaguebot");
     }
 
-    if(command == prefix + "start") {
+    if (command == prefix + "start") {
         //start game
+    }
+
+    if (command == prefix + "setup") {
+        message.guild.roles.create({
+            data: {
+                name: 'Infected',
+                color: 'RED',
+              }
+        });
     }
 
     if(command == "cough") {
@@ -65,11 +75,14 @@ client.on("message", async (message) => {
             
             
         }
+
+        function infect(patient) {
+            //infection
+            patient.roles.add()
+        }
     }
 });
 
-function infect(patient) {
-    //infection
-}
+
 
 client.login(config.token);
