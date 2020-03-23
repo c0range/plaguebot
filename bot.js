@@ -78,7 +78,7 @@ client.on("message", async (message) => {
 
         function infect(patient) {
             //infection
-            patient.roles.add()
+           
         }
     }
 });
