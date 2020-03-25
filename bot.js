@@ -1,9 +1,47 @@
 //import discordjs and secret token
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const Enmap = require("enmap");
+
 const config = require("./secret/config.json");
-const prefix = config.prefix;
-const infectionRate = 2;
+client.config = config;
+
+const fs = require('fs');
+
+fs.readdir("./events/", (err, files) => {
+    if (err) return console.error(err);
+    files.forEach(file => {
+      // If the file is not a JS file, ignore it (thanks, Apple)
+      if (!file.endsWith(".js")) return;
+      // Load the event file itself
+      const event = require(`./events/${file}`);
+      // Get just the event name from the file name
+      let eventName = file.split(".")[0];
+      // super-secret recipe to call events with all their proper arguments *after* the `client` var.
+      // without going into too many details, this means each event will be called with the client argument,
+      // followed by its "normal" arguments, like message, member, etc etc.
+      // This line is awesome by the way. Just sayin'.
+      client.on(eventName, event.bind(null, client));
+      delete require.cache[require.resolve(`./events/${file}`)];
+    });
+});
+
+client.commands = new Enmap();
+
+fs.readdir("./commands/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    if (!file.endsWith(".js")) return;
+    // Load the command file itself
+    let props = require(`./commands/${file}`);
+    // Get just the command name from the file name
+    let commandName = file.split(".")[0];
+    console.log(`Attempting to load command ${commandName}`);
+    // Here we simply store the whole thing in the command Enmap. We're not running it right now.
+    client.commands.set(commandName, props);
+  });
+});
+
 
 //on startup
 client.on("ready", () => {
@@ -11,79 +49,4 @@ client.on("ready", () => {
     
 
 });
-
-//rest of code
-client.on("message", async (message) => {
-    const command = message.content.toLocaleLowerCase();
-
-    //bot-specific commands
-    if (command == prefix + "help") {
-        //help command, maybe link to online document
-        message.channel.send("help command");
-    }
-
-    if (command == prefix + "about") {
-        message.channel.send("Hi I'm Plague Doctor (aka PlagueBot)! Learn more about me at https://github.com/c0range/plaguebot");
-    }
-
-    if (command == prefix + "start") {
-        //start game
-    }
-
-    if (command == prefix + "setup") {
-        message.guild.roles.create({
-            data: {
-                name: 'Infected',
-                color: 'RED',
-              }
-        });
-    }
-
-    if(command == "cough") {
-        infectTC();
-
-        async function infectTC() {
-            const seconds = message.createdAt.getSeconds() + 60;
-            //implement recent messages only
-            console.log(seconds);
-            //fetches previous five messages
-            const mAll = await message.channel.messages.fetch({ limit: 5});
-            //ignores bot role
-            const mNoBot = mAll.filter(m => {
-                if (m.member.roles.cache.has(config.botRole)) {
-                    return false;
-                } else {
-                    return true;
-                }
-            });
-            var mArray = mNoBot.array();
-            var subjects = [];
-            var arrayLength = mArray.length;
-            for (var i = 0; i < arrayLength; i++) {
-                subjects[i] = mArray[i].author.id;
-            }
-            //choose who to infect
-            let infectChoice = Math.floor(Math.random() * mArray.length);
-            //infect
-            let risk = Math.floor(Math.random() * infectionRate);
-            if (risk == 0) {
-                message.channel.send(`${mArray[infectChoice].member.nickname} has been infected!`);
-            }
-            infect(mArray[infectChoice].member);
-
-            message.channel.send(`Ew.. ${message.member.nickname} coughed. ${subjects.length} messages in this conversation has a chance of getting the virus. The chance of then being infected is currently ${100 / infectionRate}%.`);
-
-            
-            
-        }
-
-        function infect(patient) {
-            //infection (give role infected)
-            
-        }
-    }
-});
-
-
-
 client.login(config.token);

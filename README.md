@@ -20,7 +20,7 @@ The file content should be like this:
 ```
 In the `token` field, insert your bot secret token obtained from Discord's developer portal.
 For `prefix`, choose your own command symbol like "!" or "$" so it does not conflict with existing bots.
-For `botRole`, put in the id of the role that the server uses to classify bots. To get the id, right click on a role and click "Copy ID." Doing this will effetively ignore all bot actions to optimize gameplay.
+
 
 ## The Game
 
