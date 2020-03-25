@@ -21,6 +21,9 @@ fs.readdir("./events/", (err, files) => {
       // without going into too many details, this means each event will be called with the client argument,
       // followed by its "normal" arguments, like message, member, etc etc.
       // This line is awesome by the way. Just sayin'.
+      //by AnIdiotsGuide
+
+      //I'm an idiot so I don't understand the folloqing line.
       client.on(eventName, event.bind(null, client));
       delete require.cache[require.resolve(`./events/${file}`)];
     });
