@@ -70,15 +70,16 @@ client.on("message", async (message) => {
                 message.channel.send(`${mArray[infectChoice].member.nickname} has been infected!`);
             }
             infect(mArray[infectChoice].member);
+
             message.channel.send(`Ew.. ${message.member.nickname} coughed. ${subjects.length} messages in this conversation has a chance of getting the virus. The chance of then being infected is currently ${100 / infectionRate}%.`);
-            
+
             
             
         }
 
         function infect(patient) {
-            //infection
-           
+            //infection (give role infected)
+            
         }
     }
 });
