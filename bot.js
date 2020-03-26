@@ -2,11 +2,12 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const Enmap = require("enmap");
+const fs = require('fs');
 
 const config = require("./secret/config.json");
 client.config = config;
 
-const fs = require('fs');
+
 
 fs.readdir("./events/", (err, files) => {
     if (err) return console.error(err);
@@ -15,6 +16,7 @@ fs.readdir("./events/", (err, files) => {
       if (!file.endsWith(".js")) return;
       // Load the event file itself
       const event = require(`./events/${file}`);
+      
       // Get just the event name from the file name
       let eventName = file.split(".")[0];
       // super-secret recipe to call events with all their proper arguments *after* the `client` var.
@@ -23,7 +25,7 @@ fs.readdir("./events/", (err, files) => {
       // This line is awesome by the way. Just sayin'.
       //by AnIdiotsGuide
 
-      //I'm an idiot so I don't understand the folloqing line.
+      //I'm an idiot so I don't understand the following line.
       client.on(eventName, event.bind(null, client));
       delete require.cache[require.resolve(`./events/${file}`)];
     });
@@ -49,7 +51,5 @@ fs.readdir("./commands/", (err, files) => {
 //on startup
 client.on("ready", () => {
     console.log("login successful");
-    
-
 });
 client.login(config.token);

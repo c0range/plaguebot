@@ -6,7 +6,7 @@ exports.run = (client, message, args) => {
         //implement recent messages only
         console.log(seconds);
         //fetches previous five messages
-        const mAll = await message.channel.messages.fetch({ limit: 5});
+        const mAll = await message.channel.messages.fetch({limit: 6});
         //ignores bot role
         const mNoBot = mAll.filter(m => {
             if (m.author.bot) {
@@ -15,11 +15,21 @@ exports.run = (client, message, args) => {
                 return true;
             }
         });
+
+        
+
         var mArray = mNoBot.array();
         var subjects = [];
         var arrayLength = mArray.length;
         for (var i = 0; i < arrayLength; i++) {
+            if ((mArray[i].createdTimestamp + 600) < message.createdTimestamp) {
+                //fix every message being considered old
+                message.channel.send(`message by ${mArray[i].member.nickname} is too old to be contaminated. The time limit is 5 minutes.`)
+                continue;
+            }
             subjects[i] = mArray[i].author.id;
+            console.log(mArray[i].createdTimestamp)
+            
         }
         //choose who to infect
         let infectChoice = Math.floor(Math.random() * mArray.length);
@@ -30,7 +40,7 @@ exports.run = (client, message, args) => {
         }
         infect(mArray[infectChoice].member);
 
-        message.channel.send(`Ew.. ${message.member.nickname} coughed. ${subjects.length} messages in this conversation has a chance of getting the virus. The chance of then being infected is currently ${100 / client.config.infectionRate}%.`);
+        message.channel.send(`Ew.. ${message.member.nickname} coughed. ${subjects.length} messages in this conversation has a chance of being contaminated. The chance of then being infected is currently ${100 / client.config.infectionRate}%.`);
 
         
         
